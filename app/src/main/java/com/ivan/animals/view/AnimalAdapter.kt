@@ -8,6 +8,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.ivan.animals.R
 import com.ivan.animals.model.Animal
+import com.ivan.animals.utils.getProgressDrawable
+import com.ivan.animals.utils.loadImage
 import kotlinx.android.synthetic.main.animal_item.view.*
 
 class AnimalAdapter(val animals: ArrayList<Animal>): RecyclerView.Adapter<AnimalAdapter.AnimalViewHolder>() {
@@ -33,6 +35,7 @@ class AnimalAdapter(val animals: ArrayList<Animal>): RecyclerView.Adapter<Animal
 
         fun onBind(animal: Animal){
             animalName.text = animal.name
+            image.loadImage(animal.imageUrl, getProgressDrawable(itemView.context))
         }
     }
 }
