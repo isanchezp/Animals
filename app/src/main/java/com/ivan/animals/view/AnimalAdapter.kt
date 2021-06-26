@@ -5,6 +5,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.ivan.animals.R
 import com.ivan.animals.model.Animal
@@ -12,10 +14,13 @@ import com.ivan.animals.utils.getProgressDrawable
 import com.ivan.animals.utils.loadImage
 import kotlinx.android.synthetic.main.animal_item.view.*
 
-class AnimalAdapter(val animals: ArrayList<Animal>): RecyclerView.Adapter<AnimalAdapter.AnimalViewHolder>() {
+class AnimalAdapter(val animals: ArrayList<Animal>) :
+    RecyclerView.Adapter<AnimalAdapter.AnimalViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-        AnimalViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.animal_item, parent, false))
+        AnimalViewHolder(
+            LayoutInflater.from(parent.context).inflate(R.layout.animal_item, parent, false)
+        )
 
     override fun onBindViewHolder(holder: AnimalViewHolder, position: Int) {
         holder.onBind(animals[position])
@@ -23,19 +28,24 @@ class AnimalAdapter(val animals: ArrayList<Animal>): RecyclerView.Adapter<Animal
 
     override fun getItemCount() = animals.count()
 
-    fun onRefreshAnimals(refreshAnimals: List<Animal>){
+    fun onRefreshAnimals(refreshAnimals: List<Animal>) {
         animals.clear()
         animals.addAll(refreshAnimals)
         notifyDataSetChanged()
     }
 
-    inner class AnimalViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
+    inner class AnimalViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val container: ConstraintLayout = itemView.cl_container
         val image: ImageView = itemView.iv_animal
         val animalName: TextView = itemView.tv_animal
 
-        fun onBind(animal: Animal){
+        fun onBind(animal: Animal) {
             animalName.text = animal.name
             image.loadImage(animal.imageUrl, getProgressDrawable(itemView.context))
+            container.setOnClickListener {
+                val action = ListFragmentDirections.actionGoToDetail(animal)
+                Navigation.findNavController(container).navigate(action)
+            }
         }
     }
 }
