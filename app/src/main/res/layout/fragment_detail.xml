@@ -1,52 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:id="@+id/ll_main_container"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="center_horizontal"
-    android:orientation="vertical"
-    tools:context=".view.DetailFragment">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <ImageView
-        android:id="@+id/iv_image"
+    <data>
+        <variable
+            name="animal"
+            type="com.ivan.animals.model.Animal" />
+
+        <variable
+            name="palette"
+            type="com.ivan.animals.model.AnimalPalette" />
+    </data>
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="200dp"
-        android:scaleType="center"
-        tools:missing="contentDescription"
-        tools:src="@tools:sample/avatars" />
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:background="@{palette.color}"
+        tools:context=".view.DetailFragment">
 
-    <TextView
-        android:id="@+id/tv_name"
-        style="@style/Title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="4dp"
-        tools:text="@tools:sample/lorem" />
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="200dp"
+            android:imageUrl="@{animal.imageUrl}"
+            android:scaleType="center"
+            tools:missing="contentDescription"
+            tools:src="@tools:sample/avatars" />
 
-    <TextView
-        android:id="@+id/tv_location"
-        style="@style/Text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="4dp"
-        tools:text="@tools:sample/lorem" />
+        <TextView
+            style="@style/Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:text="@{animal.name}"
+            tools:text="@tools:sample/lorem" />
 
-    <TextView
-        android:id="@+id/tv_life_span"
-        style="@style/Text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="4dp"
-        tools:text="@tools:sample/lorem" />
+        <TextView
+            style="@style/Text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:text="@{animal.location}"
+            tools:text="@tools:sample/lorem" />
 
-    <TextView
-        android:id="@+id/tv_diet"
-        style="@style/Text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="4dp"
-        tools:text="@tools:sample/lorem" />
-</LinearLayout>
+        <TextView
+            style="@style/Text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:text="@{animal.lifeSpan}"
+            tools:text="@tools:sample/lorem" />
+
+        <TextView
+            style="@style/Text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:text="@{animal.diet}"
+            tools:text="@tools:sample/lorem" />
+    </LinearLayout>
+</layout>
+

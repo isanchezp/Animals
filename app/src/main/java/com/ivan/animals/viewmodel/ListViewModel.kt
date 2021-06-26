@@ -44,7 +44,7 @@ class ListViewModel(app: Application): AndroidViewModel(app) {
             apiService.getApiKey()
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(object: DisposableSingleObserver<ApiKey>(){
+                .subscribeWith(object : DisposableSingleObserver<ApiKey>() {
                     override fun onSuccess(key: ApiKey) {
                         if (key.key.isNullOrEmpty()) {
                             loadError.value = true
@@ -66,12 +66,12 @@ class ListViewModel(app: Application): AndroidViewModel(app) {
         )
     }
 
-    private fun getAnimals(key: String){
+    private fun getAnimals(key: String) {
         disposable.add(
             apiService.getAnimals(key)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(object : DisposableSingleObserver<AnimalsResponse>(){
+                .subscribeWith(object : DisposableSingleObserver<AnimalsResponse>() {
                     override fun onSuccess(response: AnimalsResponse) {
                         loadError.value = false
                         loading.value = false
