@@ -10,7 +10,6 @@ import com.ivan.animals.di.DaggerViewModelComponent
 import com.ivan.animals.di.TypeOfContext
 import com.ivan.animals.model.Animal
 import com.ivan.animals.model.AnimalApiService
-import com.ivan.animals.model.AnimalsResponse
 import com.ivan.animals.model.ApiKey
 import com.ivan.animals.utils.SharedPreferencesHelper
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -19,7 +18,7 @@ import io.reactivex.observers.DisposableSingleObserver
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
-class ListViewModel(app: Application): AndroidViewModel(app) {
+class ListViewModel(app: Application) : AndroidViewModel(app) {
 
     val animals by lazy { MutableLiveData<List<Animal>>() }
     val loadError by lazy { MutableLiveData<Boolean>() }
@@ -35,16 +34,24 @@ class ListViewModel(app: Application): AndroidViewModel(app) {
     lateinit var prefs: SharedPreferencesHelper
 
     private var invalidateApiKey = false
+    private var injected = false
 
-    init {
-        DaggerViewModelComponent
-            .builder()
-            .appModule(AppModule(getApplication()))
-            .build()
-            .inject(this)
+    constructor(app: Application, test: Boolean = true) : this(app) {
+        injected = true
+    }
+
+    private fun inject() {
+        if (!injected) {
+            DaggerViewModelComponent
+                .builder()
+                .appModule(AppModule(getApplication()))
+                .build()
+                .inject(this)
+        }
     }
 
     fun refresh() {
+        inject()
         loading.value = true
         invalidateApiKey = false
         val key = prefs.getApiKey()
@@ -88,8 +95,8 @@ class ListViewModel(app: Application): AndroidViewModel(app) {
             apiService.getAnimals(key)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(object : DisposableSingleObserver<AnimalsResponse>() {
-                    override fun onSuccess(response: AnimalsResponse) {
+                .subscribeWith(object : DisposableSingleObserver<List<Animal>>() {
+                    override fun onSuccess(response: List<Animal>) {
                         loadError.value = false
                         loading.value = false
                         animals.value = response
@@ -104,7 +111,7 @@ class ListViewModel(app: Application): AndroidViewModel(app) {
                             e.printStackTrace()
                             loadError.value = true
                             loading.value = false
-                            animals.value = arrayListOf()
+                            animals.value = listOf()
                             Log.d("getAnimals()", "An error happened")
                         }
                     }

@@ -10,7 +10,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
 @Module
-class ApiModule {
+open class ApiModule {
 
     private val BASE_URL = "https://us-central1-apis-4674e.cloudfunctions.net"
 
@@ -25,7 +25,7 @@ class ApiModule {
     }
 
     @Provides
-    fun provideAnimalApiService(): AnimalApiService {
+    open fun provideAnimalApiService(): AnimalApiService {
         return AnimalApiService()
     }
 }

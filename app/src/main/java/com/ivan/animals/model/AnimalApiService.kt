@@ -17,7 +17,7 @@ class AnimalApiService {
         return api.getApiKey()
     }
 
-    fun getAnimals(key: String): Single<AnimalsResponse>{
+    fun getAnimals(key: String): Single<List<Animal>>{
         return api.getAnimals(key)
     }
 }
